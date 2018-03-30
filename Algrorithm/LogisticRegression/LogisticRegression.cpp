@@ -61,10 +61,10 @@ double sigmoid(double x)
 //改进版随机梯度上升，在每次迭代中随机选择样本来更新权重，
 //并且随迭代次数增加，权重变化越小。
 //Sample pl[]样本，iterations迭代次数，alpha更新率
-double *stocGradAscent(Sample pl[],int  iterations,double alpha)
+double *stocGradAscent(vector<Sample> pl,int  iterations,double alpha)
 {
 	//获取数组长度
-	int count = sizeof(pl);
+	int count = pl.size();
 	//创建权值,初始化为1
 	double weights[2]{1,1};
 	//遍历
@@ -89,6 +89,7 @@ double *stocGradAscent(Sample pl[],int  iterations,double alpha)
 
 vector<Sample> GetData(string path)
 {
+	int v, w, weight;
 	vector<Sample> data;
 	ifstream infile;   //输入流
 	infile.open(path, ios::in);
@@ -97,10 +98,10 @@ vector<Sample> GetData(string path)
 	char line[100] = {0};
 	while (infile.getline(line,sizeof(line)))            // 若未到文件结束一直循环
 	{
-		cout << line << endl;
 		//Sample p(x, y, lable);
 		//data.push_back(p);
 	}
+	infile.close();   //关闭文件
 	infile.close();   //关闭文件
 	return data;
 }
@@ -110,7 +111,18 @@ int main()
 	double x = 0.0;
 	double y = sigmoid(x);
 	//定义数据
-	vector<Sample> data = GetData("LogisticRegression.txt");
+	//vector<Sample> data = GetData("LogisticRegression.txt");
+	vector<Sample> data;
+	data.push_back(Sample(-0.017612, 14.053064, 0));
+	data.push_back(Sample(-1.395634, 4.662541, 1));
+	data.push_back(Sample(-0.752157, 6.538620, 0));
+	data.push_back(Sample(-1.322371, 7.152853, 0));
+	data.push_back(Sample(0.423363, 11.054677, 0));
+	data.push_back(Sample(0.406704, 7.067335, 1));
+	data.push_back(Sample(0.667394, 12.741452, 0));
+	double *weights;
+	weights = stocGradAscent(data,20,0.001);
+	cout << weights[0] <<":"<< weights[1] << endl;
 	system("pause");
     return 0;
 }
