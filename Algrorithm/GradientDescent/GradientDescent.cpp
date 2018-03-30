@@ -5,12 +5,12 @@
 #include<cmath>  
 #include<ctime> 
 using namespace std;
-
+//函数
 double f(double x)
 {
 	return x*x - 2 * x + 1;
 }
-
+//求导数
 double g(double x)
 {
 	return  2 * x - 2;
