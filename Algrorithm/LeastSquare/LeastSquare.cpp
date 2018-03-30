@@ -1,6 +1,8 @@
 // LeastSquare.cpp : 定义控制台应用程序的入口点。
 //最小二乘法
-
+//通过最小化误差的平方和寻找数据的最佳函数匹配。
+//利用最小二乘法可以简便地求得未知的数据，
+//并使得这些求得的数据与实际数据之间误差的平方和为最小。
 #include "stdafx.h"
 #include <iostream>
 #include <cmath>

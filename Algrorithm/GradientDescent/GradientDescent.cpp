@@ -1,5 +1,7 @@
 // GradientDescent.cpp : 定义控制台应用程序的入口点。
 //梯度下降
+//沿梯度下降的方向求解极小值（也可以沿梯度上升方向求解极大值）,
+//算法迭代的终止条件是梯度向量的幅值接近0即可，可以设置个非常小的常数阈值。
 #include "stdafx.h"
 #include<iostream>  
 #include<cmath>  
