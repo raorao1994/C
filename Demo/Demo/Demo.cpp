@@ -94,6 +94,14 @@ void  draw()
 	// 恢复原来的画笔和画刷
 	SelectObject(hdc, hpen_old);
 	SelectObject(hdc, hbrush_old);
+
+	DeleteObject(hpen1);
+	DeleteObject(hpen2);
+	DeleteObject(hbrush1);
+	DeleteObject(hbrush2);
+	DeleteObject(hpen_old);
+	DeleteObject(hbrush_old);
+	DeleteObject(hdc);
 }
 
 int main()
@@ -101,7 +109,7 @@ int main()
 	while (true)
 	{
 		draw();
-		Sleep(100);
+		Sleep(10);
 	}
 	system("prase");
 }
