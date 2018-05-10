@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04时间信息", "04时间�
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05结构体", "05结构体\05结构体.vcxproj", "{783AFAF2-4A86-4FE3-BD17-E199DC2CA201}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "遍历文件夹文件保存到txt文本", "遍历文件夹文件保存到txt文本\遍历文件夹文件保存到txt文本.vcxproj", "{76ED7A79-7AA3-499E-870B-DD506030617F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,16 @@ Global
 		{783AFAF2-4A86-4FE3-BD17-E199DC2CA201}.Release|x64.Build.0 = Release|x64
 		{783AFAF2-4A86-4FE3-BD17-E199DC2CA201}.Release|x86.ActiveCfg = Release|Win32
 		{783AFAF2-4A86-4FE3-BD17-E199DC2CA201}.Release|x86.Build.0 = Release|Win32
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Debug|x64.ActiveCfg = Debug|x64
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Debug|x64.Build.0 = Debug|x64
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Debug|x86.ActiveCfg = Debug|Win32
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Debug|x86.Build.0 = Debug|Win32
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Release|Any CPU.ActiveCfg = Release|Win32
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Release|x64.ActiveCfg = Release|x64
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Release|x64.Build.0 = Release|x64
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Release|x86.ActiveCfg = Release|Win32
+		{76ED7A79-7AA3-499E-870B-DD506030617F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,5 +125,6 @@ Global
 		{6D124BE6-EE94-493B-9590-53734142609C} = {F169A3DE-E40E-4149-A8E4-66EB221801DF}
 		{6CF337BD-F390-4BD3-9E11-2F8B3960E26F} = {F169A3DE-E40E-4149-A8E4-66EB221801DF}
 		{783AFAF2-4A86-4FE3-BD17-E199DC2CA201} = {F169A3DE-E40E-4149-A8E4-66EB221801DF}
+		{76ED7A79-7AA3-499E-870B-DD506030617F} = {00167CE4-C029-475D-A83B-E309380609A0}
 	EndGlobalSection
 EndGlobal
