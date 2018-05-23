@@ -9,8 +9,6 @@
 #include <atlimage.h>
 using namespace std;
 
-
-
 void  draw()
 {
 	// 先创建三个HDC缓冲对象
