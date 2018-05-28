@@ -7,157 +7,82 @@
 #include <map>
 #include <fstream>
 #include <atlimage.h>
-#include "afxwin.h"
-#include <string.h>
 using namespace std;
 
-int flag = 0;
-//词汇库
-char textlib[] = "焦虑 紧张 愤怒 沮丧 悲伤 痛苦 愤怒 抱怨 自责 悔恨 担忧 不安 郁闷 伤心 难过 失望 堕落 烦躁 生气 ";
-char text[100];
-
-//字符大小
-int textw = 100;
-int texth = 60;
-RECT rect;
-
-void getnextchar() {
-	int n = flag;
-	while (textlib[n] != ' ')
-	{
-		n++;
-		if (n >= strlen(textlib))
-		{
-			n = 0;
-			flag = 0;
-		}
-	}
-	strncpy(text, textlib + flag, n - flag);
-	flag = n + 1;
-}
-
-void drawtop(int x, int y)
-{
-	HDC hdc = GetWindowDC(GetForegroundWindow());
-	//根据绘图点设定颜色	COLORREF clr=GetPixel(hdc,x,y);	
-	//根据获得的颜色修正，暗色加亮，亮色减弱	
-	int bright;
-	int r = 100, g = 100, b = 100;
-	bright = 0.299*r + 0.587*g + 0.114*b;
-	if (bright > 127) {
-		r = r * 2 / 3;
-		g = g * 2 / 3;
-		b = b * 2 / 3;
-	}
-	else if (bright > 20 && bright <= 127)
-	{
-		r = r * 3 / 2;
-		g = g * 3 / 2;
-		b = b * 3 / 2;
-	}
-	else
-	{
-		r += 20;
-		g += 20;
-		b += 20;
-	}
-	//	
-	CFont font;	 
-	font.CreateFont(
-		textw,                                                  //   nHeight      
-		texth,                                                   //   nWidth     
-		0,                                                   //   nEscapement   
-		0,                                                   //   nOrientation    
-		FW_NORMAL,                                   //   nWeight   
-		FALSE,                                           //   bItalic      
-		FALSE,                                           //   bUnderline    
-		0,                                                   //   cStrikeOut     
-		ANSI_CHARSET,                             //   nCharSet      
-		OUT_DEFAULT_PRECIS,                 //   nOutPrecision      
-		CLIP_DEFAULT_PRECIS,               //   nClipPrecision     
-		DEFAULT_QUALITY,                       //   nQuality      
-		DEFAULT_PITCH | FF_SWISS,     //   nPitchAndFamily        
-		_T("宋体"));	 getnextchar();	 //  // 使用双缓冲避免屏幕刷新时闪烁	
-	CDC dc;	 dc.Attach(hdc);      CDC dcMem;// 内存dc   
-	CBitmap bmpMem; // 位图	
-	dcMem.CreateCompatibleDC(NULL);// 创建兼容dc  
-	bmpMem.CreateCompatibleBitmap(&dc, rect.right - rect.left + textw, rect.bottom - rect.top + texth);
-	//创建跟客户区域大小一样的(空)位图    
-	// 把位图选到设备上下文环境中  
-	CBitmap *pOld = dcMem.SelectObject(&bmpMem);
-	//设置一下基本参数	
-	//设置颜色	
-	dcMem.SetTextColor(RGB(r, g, b));	//背景色透明	
-	dcMem.SetBkMode(TRANSPARENT);
-	dcMem.SelectObject(font);	 //先把背景复制下来
-	dcMem.BitBlt(0, 0, rect.right - rect.left + textw, rect.bottom - rect.top + texth, &dc, 0, 0, SRCCOPY);
-	//画图	
-	dcMem.TextOutW(x, y, text);
-	//dcMem.TextOutW(x, y, text, sizeof(text));
-	// 从内存拷贝到设备dc    
-	dc.BitBlt(0, 0, rect.right - rect.left + textw, rect.bottom - rect.top + texth, &dcMem, 0, 0, SRCCOPY);
-	dc.SelectObject(pOld);
-	// 释放资源   
-	bmpMem.DeleteObject();
-	dcMem.DeleteDC();
-	ReleaseDC(NULL, hdc);
-}
 
 void  draw()
 {
-	// 先创建三个HDC缓冲对象
-	HDC hdc = NULL, mdc = NULL;
-	// 创建位图对象
-	HBITMAP hBitmap;
 	// 获取一个可供画图的DC，我这里就直接用桌面算了
-	hdc = GetWindowDC(GetDesktopWindow());//获取设备环境句柄
-	mdc = CreateCompatibleDC(hdc);//创建一个和g_hdc兼容的内存DC 
-	//创建一个很窗口兼容的空位图对象
-	//hBitmap = CreateCompatibleBitmap(hdc, 800, 600);
-	// 创建绿色5像素宽度的破折画笔，如果你想创建其他种类的画笔请参阅MSDN
-	HPEN hpen = CreatePen(PS_DASH, 5, RGB(0, 255, 0));
-	// 换hpen1和hbrush1，然后在(40,100)处也画一个矩形，看看有何差别
-	SelectObject(mdc, hpen);
-	Rectangle(mdc, 0, 0, 300, 400);
-	BitBlt(hdc, 0, 0, 300, 400, mdc, 0, 0, SRCCOPY);
-	// 恢复原来的画笔和画刷
-	DeleteObject(hpen);
-	DeleteObject(hdc);
+	HDC hdc = GetWindowDC(GetDesktopWindow());
 
-	//SelectObject(mdc, hBitmap);//将位图放在g_mdc中 
-	//electObject(bdc, bitmap);//bitmap代表位图对象，指将要绘制的图片.放入g_bdc中.
-	//Bitble(g_mdc, 0, 0, WIN_WIDTH, WIN_HIGHT, g_bdc, 0, 0, SRCCOPY);//将g_bdc放到g_mdc中 
-	//Bitble(g_hdc, 0, 0, WIN_WIDTH, WIN_HIGHT, g_mdc, 0, 0, SRCCOPY);//最后将g_mdc放入g_hdc中，这样就可以将图片显示在窗口中  
-	//DeleteDC();
+	// 创建红色1像素宽度的实线画笔
+	HPEN hpen1 = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+	// 创建绿色5像素宽度的破折画笔，如果你想创建其他种类的画笔请参阅MSDN
+	HPEN hpen2 = CreatePen(PS_DASH, 5, RGB(0, 255, 0));
+	// 创建一个实体蓝色画刷
+	HBRUSH hbrush1 = CreateSolidBrush(RGB(0, 0, 255));
+	// 创造一个透明的画刷，如果你想创建其他种类的画刷请参阅MSDN
+	HBRUSH hbrush2 = (HBRUSH)GetStockObject(NULL_BRUSH);
+
+	// 将hpen1和hbrush1选进HDC，并保存HDC原来的画笔和画刷
+	HPEN hpen_old = (HPEN)SelectObject(hdc, hpen1);
+	HBRUSH hbrush_old = (HBRUSH)SelectObject(hdc, hbrush1);
+
+	// 在(40,30)处画一个宽200像素，高50像素的矩形
+	Rectangle(hdc, 40, 30, 40 + 200, 30 + 50);
+
+	// 换hpen1和hbrush1，然后在(40,100)处也画一个矩形，看看有何差别
+	SelectObject(hdc, hpen2);
+	SelectObject(hdc, hbrush2);
+	Rectangle(hdc, 40, 100, 40 + 200, 100 + 50);
+
+	// 画个椭圆看看
+	Ellipse(hdc, 40, 200, 40 + 200, 200 + 50);
+
+	// 画个(0,600)到(800,0)的直线看看
+	MoveToEx(hdc, 0, 600, NULL);
+	LineTo(hdc, 800, 0);
+
+	// 在(700,500)处画个黄点，不过这个点只有一像素大小，你细细的看才能找到
+	SetPixel(hdc, 700, 500, RGB(255, 255, 0));
+	//文字，
+	//参数：桌面句柄，XY坐标，文字，文字宽度
+	TextOutA(hdc, 700, 500, "哈哈哈", 6);
+	// 恢复原来的画笔和画刷
+	SelectObject(hdc, hpen_old);
+	SelectObject(hdc, hbrush_old);
+
+	DeleteObject(hpen1);
+	DeleteObject(hpen2);
+	DeleteObject(hbrush1);
+	DeleteObject(hbrush2);
+	DeleteObject(hpen_old);
+	DeleteObject(hbrush_old);
+	DeleteObject(hdc);
+}
+
+void  draw1()
+{
+	HWND hwnd=NULL;
+	RECT rc;
+	HDC hdc = GetWindowDC(GetDesktopWindow());
+	GetClientRect(hwnd, &rc);
+	HDC hMemDc = CreateCompatibleDC(hdc);
+	HBITMAP hBmp = CreateCompatibleBitmap(hdc, rc.right, rc.bottom);
+	HBITMAP hOldBmp = (HBITMAP)SelectObject(hMemDc, hBmp);
+	//在此使用hMemDc进行 GDI 绘制  
+	BitBlt(hdc, 0, 0, rc.right, rc.bottom, hMemDc, 0, 0, SRCCOPY);
+	SelectObject(hMemDc, hOldBmp);
+	DeleteObject(hBmp);
+	DeleteObject(hMemDc);
 }
 
 int main()
 {
-		int seed; 	
-		int randomx;	
-		int randomy;	
-		srand(unsigned(time(0)));
-		//自己按ctrl+c退出
-		while(true)	{	
-			HWND hwnd=GetForegroundWindow();  	
-			GetWindowRect(hwnd,&rect); 		
-			seed=rand();		
-			srand(seed);		
-			randomx=rand()%(rect.right-rect.left-textw);	
-			seed=rand();		
-			srand(seed);	
-			randomy=rand()%(rect.bottom-rect.top-texth);	
-			if(randomx<0)		
-				randomx=(-1)*randomx;	
-			if(randomy<0)		
-				randomy=(-1)*randomy;	
-			drawtop(randomx+textw/2,randomy+texth/2);	
-			Sleep(10);		
-			//RedrawWindow(hwnd,&rect,0,RDW_ERASE|RDW_INVALIDATE|RDW_ALLCHILDREN);	
-			RedrawWindow(hwnd,NULL,0,RDW_ERASE|RDW_INVALIDATE|RDW_ALLCHILDREN);	
-			//InvalidateRect(hwnd, &rect, false);	
-			Sleep(1000);	
-		}  
-		return 0;
+	//自己按ctrl+c退出
+	while (true) {
+		draw1();
+	}
+	return 0;
 }
 
