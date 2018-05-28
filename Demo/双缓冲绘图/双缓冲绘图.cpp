@@ -63,18 +63,35 @@ void  draw()
 
 void  draw1()
 {
-	HWND hwnd=NULL;
-	RECT rc;
-	HDC hdc = GetWindowDC(GetDesktopWindow());
-	GetClientRect(hwnd, &rc);
-	HDC hMemDc = CreateCompatibleDC(hdc);
-	HBITMAP hBmp = CreateCompatibleBitmap(hdc, rc.right, rc.bottom);
-	HBITMAP hOldBmp = (HBITMAP)SelectObject(hMemDc, hBmp);
-	//在此使用hMemDc进行 GDI 绘制  
-	BitBlt(hdc, 0, 0, rc.right, rc.bottom, hMemDc, 0, 0, SRCCOPY);
-	SelectObject(hMemDc, hOldBmp);
-	DeleteObject(hBmp);
-	DeleteObject(hMemDc);
+	HWND hwdn = GetDesktopWindow();
+	HDC pDC= GetWindowDC(hwdn);
+	//首先定义一个显示设备对象
+	HDC MemDC;
+	//定义一个位图对象　
+	//随后建立与屏幕显示兼容的内存显示设备
+	HBITMAP MemBitmap,oldBitmap;
+	//这时还不能绘图，因为没有地方画 ^_^
+	MemDC = CreateCompatibleDC(NULL);
+	//下面建立一个与屏幕显示兼容的位图，至于位图的大小嘛，可以用窗口的大小，也可以自己定义
+	MemBitmap = CreateCompatibleBitmap(pDC, 500, 500);
+	//将位图选入到内存显示设备中　
+	//只有选入了位图的内存显示设备才有地方绘图，画到指定的位图上
+	oldBitmap = (HBITMAP)SelectObject(MemDC, MemBitmap);
+	//SelectObject(MemDC, oldBitmap);
+	//先用背景色将位图清除干净，这里我用的是白色作为背景　//你也可以用自己应该用的颜色　
+	// 创建红色1像素宽度的实线画笔
+	HPEN hpen1 = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+	HPEN hpen_old = (HPEN)SelectObject(pDC, hpen1);
+	//FillRect(MemDC, rt, RGB(255, 255, 255));
+	TextOutA(MemDC, 200, 300, "哈哈哈", 6);
+	Rectangle(MemDC, 40, 30, 40 + 200, 30 + 50);
+	//把屏幕设备描述表拷贝到内存设备描述表中
+	BitBlt(MemDC, 0, 0, 500, 500, pDC, 0, 0, SRCCOPY);
+
+	SelectObject(MemDC, oldBitmap);
+
+	DeleteObject(MemBitmap);
+	DeleteObject(MemDC);
 }
 
 int main()
@@ -82,6 +99,7 @@ int main()
 	//自己按ctrl+c退出
 	while (true) {
 		draw1();
+		Sleep(100);
 	}
 	return 0;
 }

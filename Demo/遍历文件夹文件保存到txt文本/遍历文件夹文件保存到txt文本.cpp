@@ -6,7 +6,7 @@
 
 using namespace std;
 
-string path = "F:/图片文件";
+string path = "F:/opencv练级分类/neg";
 
 int main()
 {
@@ -27,7 +27,8 @@ int main()
 				string imgPath = p.assign(path).append("\\").append(fileinfo.name);
 				cout << "路径：" << imgPath.c_str() << endl;
 				//写入文本
-				file << fileinfo.name << endl;
+				//file << fileinfo.name << " 1 0 0 40 40" << endl;
+				file <<"neg/"<< fileinfo.name << endl;
 			}
 		} while (_findnext(hFile, &fileinfo) == 0);
 		_findclose(hFile);
