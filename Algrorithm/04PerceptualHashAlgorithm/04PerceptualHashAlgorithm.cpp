@@ -27,7 +27,7 @@ int CalcImagePerceptualHashKey(InputArray input)
 	{
 		for (size_t x = 0; x < 8; x++)
 		{
-			unsigned char& elemet = *(unsigned char*)pGrayscaleImage.at<unsigned char>(x, y);
+			unsigned char elemet = pGrayscaleImage.at<unsigned char>(x, y);
 			ElementMean += elemet;
 		}
 	}
@@ -39,7 +39,7 @@ int CalcImagePerceptualHashKey(InputArray input)
 	{
 		for (size_t x = 0; x < 8; x++)
 		{
-			unsigned char& elemet = *(unsigned char*)pGrayscaleImage.at<unsigned char>(x, y);
+			unsigned char elemet = pGrayscaleImage.at<unsigned char>(x, y);
 			if (elemet > ElementMean)
 			{
 				//向左移一位
@@ -56,7 +56,7 @@ int CalcImagePerceptualHashKey(InputArray input)
 	}
 	return HashKey;
 }
-
+//指纹hash码比对
 float CompareImageSimilarity(int64 key1, int64 key2)
 {
 	//两组hash码对比
@@ -76,12 +76,16 @@ float CompareImageSimilarity(int64 key1, int64 key2)
 
 int main()
 {
-	int a = 11;
-	int b = 11;
-	a >>= 1;
-	b=b >> 1;
-	cout << a << endl;
-	cout << b << endl;
+	Mat img1 = imread("1.jpg");
+	Mat img2 = imread("2.jpg");
+
+	int64 key1 = CalcImagePerceptualHashKey(img1);
+	int64 key2 = CalcImagePerceptualHashKey(img2);
+
+	float lv = CompareImageSimilarity(key1, key2);
+
+	cout << "匹配度：" << lv << endl;
+	waitKey(2000);
 	system("pause");
     return 0;
 }
