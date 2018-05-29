@@ -9,6 +9,18 @@
 #include <atlimage.h>
 using namespace std;
 
+//常量
+HWND hwnd = NULL;
+LONG height, width;
+
+void init() 
+{
+	hwnd = GetDesktopWindow();
+	LPRECT rect;
+	GetWindowRect(hwnd, rect);
+	height=rect->bottom;
+	width = rect->right;
+}
 
 void  draw()
 {
@@ -96,6 +108,7 @@ void  draw1()
 
 int main()
 {
+	init()
 	//自己按ctrl+c退出
 	while (true) {
 		draw1();
