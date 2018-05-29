@@ -9,7 +9,7 @@
 
 using namespace std;
 using namespace cv;
-
+//根据图片生成64位hash码
 int CalcImagePerceptualHashKey(InputArray input)
 {
 	Mat _input = input.getMat();
@@ -55,6 +55,23 @@ int CalcImagePerceptualHashKey(InputArray input)
 		}
 	}
 	return HashKey;
+}
+
+float CompareImageSimilarity(int64 key1, int64 key2)
+{
+	//两组hash码对比
+	int64 result = key1^key2;
+	int count = 0;
+	int i = 64;
+	while (i--)
+	{
+		//判断最后一位是否为1，即是否相同
+		if ((result & 1) == 1)
+			count++;
+		//右移一位，进入下一位
+		result >>= 1;
+	}
+	return count == 0 ? 1 : (64 - count) / (float)64;
 }
 
 int main()
