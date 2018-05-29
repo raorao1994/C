@@ -61,6 +61,10 @@ double sigmoid(double x)
 //改进版随机梯度上升，在每次迭代中随机选择样本来更新权重，
 //并且随迭代次数增加，权重变化越小。
 //Sample pl[]样本，iterations迭代次数，alpha更新率
+/*
+iterations 迭代次数
+alpha 梯度系数
+*/
 double *stocGradAscent(vector<Sample> pl,int  iterations,double alpha)
 {
 	//获取数组长度
