@@ -142,6 +142,16 @@ VOID CAnnotImage::DrawItem(CAnnotItem* pItem)
 
 	Pen pen(pItem->m_clr, pItem->nPenWidth);
 	m_pGraphic->DrawLines(&pen, (Point*)&(pItem->m_arPoint[0]), pItem->m_arPoint.size());
+	
+	FontFamily fontf(L"楷体");
+	Font myfont(&fontf, 60, FontStyleRegular, UnitPoint);
+	SolidBrush br(Color(255, 0, 0));
+	PointF school_site((REAL)100, (REAL)100);//文字放置的像素坐标
+	StringFormat format;
+	format.SetAlignment(StringAlignmentNear);    //文本排列方式，即在对应位置居中、靠左、靠右
+	WCHAR string[] = L"姓名123123";//要写的字
+	//m_pGraphic->DrawString(c, 3, &myfont, &school_site, &format,&br);
+	m_pGraphic->DrawString(string, wcslen(string), &myfont, school_site, &format, &br);//把string绘制到图上
 }
 
 VOID CAnnotImage::DrawContent()
@@ -203,7 +213,7 @@ VOID CAnnotDrawer::InitItem(CAnnotItem* pItem)
 
 	if(nPenWidth <= MIN_PEN_WIDTH) nPenWidth = MIN_PEN_WIDTH;
 	if(a < MIN_TRANSPARENT) a = MIN_TRANSPARENT;
-
+	nPenWidth = 12; a = 250;
 	pItem->m_clr = Color(a, r, g, b);
 	pItem->nPenWidth = nPenWidth;
 }
